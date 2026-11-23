@@ -1,1 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gatherly – Event Booking Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F2F3F8;--surface:#fff;--ink:#141B34;--muted:#5D6785;--line:#DDE1EE;--accent:#B07A12;--accent-ink:#fff;--hero1:#141B34;--hero2:#2B2F77;--ok:#0E8F63;--bad:#C23B3B;--warn:#B7791F;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0C1020;--surface:#151B33;--ink:#EDF0FA;--muted:#9DA7C6;--line:#262F52;--accent:#E3B65A;--accent-ink:#1A1405;--hero1:#0C1020;--hero2:#272B6B;--ok:#3DD6A0;--bad:#FF7F7F;--warn:#F2C26B;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0C1020;--surface:#151B33;--ink:#EDF0FA;--muted:#9DA7C6;--line:#262F52;--accent:#E3B65A;--accent-ink:#1A1405;--hero1:#0C1020;--hero2:#272B6B;--ok:#3DD6A0;--bad:#FF7F7F;--warn:#F2C26B;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "DM Sans",system-ui,sans-serif}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;margin:0;line-height:1.1}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.btn{background:var(--accent);color:var(--accent-ink);border:0;border-radius:10px;padding:.62rem 1.1rem;font-weight:700;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn.ok{background:var(--ok);color:#fff}.btn.bad{background:transparent;color:var(--bad);border:1.5px solid var(--bad)}
+.btn:disabled{opacity:.4;cursor:not-allowed}.btn.sm{padding:.4rem .8rem;font-size:.9rem}
+input,select,textarea{width:100%;padding:.68rem .8rem;border-radius:10px;border:1.5px solid var(--line);background:var(--surface)}
+label{display:block;font-weight:500;margin:.8rem 0 .3rem}
+.split{min-height:100vh;display:grid;grid-template-columns:1.1fr 1fr}
+.hero{background:linear-gradient(150deg,var(--hero1),var(--hero2));color:#EDF0FA;padding:2.5rem;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.hero h1{font-size:clamp(2.4rem,5vw,3.8rem);font-weight:800;max-width:11em;position:relative}
+.hero p{max-width:30em;color:#BFC7E6;position:relative}
+.hero svg.bg{position:absolute;inset:0;width:100%;height:100%}
+.brand{font-family:Fraunces,serif;font-weight:800;font-size:1.5rem;position:relative}
+.brand b{color:#E3B65A}
+.formside{display:grid;place-items:center;padding:1.5rem}
+.box{width:100%;max-width:410px}
+.box h2{font-size:2rem}.muted{color:var(--muted)}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:.3rem;background:var(--bg);padding:.3rem;border-radius:12px;margin:1rem 0}
+.seg button{border:0;background:none;border-radius:9px;padding:.55rem;cursor:pointer;font-weight:500}
+.seg button[aria-pressed="true"]{background:var(--surface);font-weight:700;box-shadow:0 1px 4px rgba(20,27,52,.18)}
+.err{color:var(--bad);min-height:1.3em;font-size:.92rem;margin:.5rem 0 0}
+.creds{margin-top:1rem;border:1.5px dashed var(--line);border-radius:12px;padding:.7rem .9rem;font-size:.9rem}
+.creds div{display:flex;justify-content:space-between;gap:.5rem;align-items:center;padding:.25rem 0}
+.creds code{font-size:.82rem;color:var(--muted)}
+.creds button{background:none;border:0;color:var(--accent);font-weight:700;cursor:pointer}
+header.top{display:flex;flex-wrap:wrap;gap:.8rem;align-items:center;justify-content:space-between;padding:.9rem 1.2rem;background:var(--surface);border-bottom:1.5px solid var(--line)}
+nav{display:flex;gap:.3rem;flex-wrap:wrap;align-items:center}
+nav .tab{background:none;border:0;padding:.5rem .85rem;border-radius:9px;cursor:pointer;font-weight:500;color:var(--muted)}
+nav .tab[aria-current="true"]{background:var(--bg);color:var(--ink);font-weight:700}
+.who{font-size:.9rem;color:var(--muted)}
+.role{background:var(--accent);color:var(--accent-ink);border-radius:99px;padding:.1rem .6rem;font-size:.78rem;font-weight:700;margin-right:.4rem}
+main{max-width:1060px;margin:0 auto;padding:1.4rem 1.2rem 3rem}
+main h2{font-size:1.9rem;margin-bottom:1rem}
+.banner{border-radius:18px;padding:1.6rem;margin-bottom:1.4rem;color:#EDF0FA;background:linear-gradient(120deg,var(--hero1),var(--hero2));position:relative;overflow:hidden}
+.banner h2{margin:0 0 .3rem;font-size:2rem}.banner p{margin:0;color:#BFC7E6}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.8rem;margin-bottom:1.4rem}
+.stat{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:1rem}
+.stat b{display:block;font:800 1.8rem Fraunces,serif}
+.bar{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1rem}.bar input{flex:2 1 200px}.bar select{flex:1 1 150px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.1rem}
+.card{background:var(--surface);border:1.5px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+.card svg{display:block;width:100%;height:150px}
+.card .body{padding:1rem 1.1rem 1.1rem;display:flex;flex-direction:column;gap:.35rem;flex:1}
+.card h3{font-size:1.25rem}.meta{color:var(--muted);font-size:.92rem}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:.5rem;margin-top:auto;padding-top:.7rem;flex-wrap:wrap}
+.price{font-weight:700;font-size:1.1rem}.low{color:var(--bad);font-weight:700}
+.badge{display:inline-block;border-radius:99px;padding:.1rem .6rem;font-size:.8rem;font-weight:700;border:1.5px solid currentColor}
+.badge.approved{color:var(--ok)}.badge.pending{color:var(--warn)}.badge.rejected{color:var(--bad)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:.9rem 1.1rem;margin-bottom:.7rem}
+.row h3{font-size:1.1rem}.acts{display:flex;gap:.5rem;flex-wrap:wrap}
+.panel{background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:1.3rem;max-width:620px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.empty{text-align:center;color:var(--muted);padding:2.4rem 1rem}
+.ticket code{font-weight:700;letter-spacing:.06em;color:var(--accent)}
+dialog{border:0;border-radius:18px;padding:1.5rem;max-width:390px;width:calc(100% - 2rem);background:var(--surface);color:var(--ink)}
+dialog::backdrop{background:rgba(8,12,30,.6)}
+.qty{display:flex;align-items:center;gap:1rem;margin:.4rem 0}
+.qty button{width:40px;height:40px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);cursor:pointer;font-size:1.2rem}
+.total{display:flex;justify-content:space-between;font-weight:700;margin:1rem 0}
+#toast{position:fixed;left:50%;bottom:calc(1.2rem + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:.7rem 1.1rem;border-radius:10px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:9}
+#toast.on{opacity:1}
+@media (max-width:760px){.split{grid-template-columns:1fr}.hero{min-height:260px;padding:1.6rem}.two{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<dialog id="dlg">
+  <h3 id="dt" style="font-size:1.5rem"></h3><p class="meta" id="dm"></p>
+  <label>Tickets</label>
+  <div class="qty"><button id="minus" aria-label="Fewer tickets">−</button><b id="n">1</b><button id="plus" aria-label="More tickets">+</button></div>
+  <div class="total"><span>Total</span><span id="tot"></span></div>
+  <div style="display:flex;gap:.6rem;justify-content:flex-end"><button class="btn ghost" id="cancel">Close</button><button class="btn" id="confirm">Confirm booking</button></div>
+</dialog>
+<div id="toast" role="status"></div>
 
+<script>
+const ACCOUNTS=[
+ {role:"admin",email:"admin@gatherly.com",pass:"Admin2026!",name:"Platform Admin"},
+ {role:"company",email:"events@lumina.com",pass:"Company1!",name:"Lumina Live"},
+ {role:"company",email:"hello@globaledu.com",pass:"Company2!",name:"GlobalEdu Tours"},
+ {role:"customer",email:"rina@mail.com",pass:"Customer1!",name:"Rina Ahmed"},
+ {role:"customer",email:"sam@mail.com",pass:"Customer2!",name:"Sam Hasan"}
+];
+const SEED={events:[
+ {id:"e1",t:"Dhaka Live: Echoes of Bengal",c:"Concert",city:"Dhaka",d:"2026-12-18",time:"7:00 PM",p:1500,seats:200,co:"Lumina Live",status:"approved",desc:"An open-air night of modern and folk Bengali music with six live acts."},
+ {id:"e2",t:"Study Tour: Tea Gardens of Sylhet",c:"Study Tour",city:"Sylhet",d:"2027-01-10",time:"8:00 AM",p:4500,seats:40,co:"GlobalEdu Tours",status:"approved",desc:"Three-day guided tour of Sreemangal and Sylhet tea estates, with field workshops."},
+ {id:"e3",t:"Dhaka International Book Fair",c:"Book Fair",city:"Dhaka",d:"2027-02-05",time:"11:00 AM",p:100,seats:500,co:"Lumina Live",status:"approved",desc:"Hundreds of publishers, author talks and a children’s reading corner."},
+ {id:"e4",t:"Startup & Career Expo",c:"Expo",city:"Dhaka",d:"2027-01-24",time:"10:00 AM",p:0,seats:300,co:"GlobalEdu Tours",status:"approved",desc:"Meet 60 hiring companies and join live pitch sessions."},
+ {id:"e5",t:"Sylhet Folk Music Night",c:"Concert",city:"Sylhet",d:"2027-02-14",time:"6:30 PM",p:1200,seats:150,co:"Lumina Live",status:"pending",desc:"A riverside evening of Baul and folk performances."}
+],bookings:[],messages:[]};
+const HUE={Concert:275,"Study Tour":160,"Book Fair":28,Expo:205,Workshop:335},ICON={Concert:"🎵","Study Tour":"🧭","Book Fair":"📚",Expo:"🏢",Workshop:"🛠"};
+const $=s=>document.querySelector(s);
+const E=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let S=JSON.parse(JSON.stringify(SEED)),me=null,tab="",lrole="customer",cur=null,qty=1,q="",cat="",dbRef=null;
+try{const s=localStorage.getItem("gg_state");if(s)S=JSON.parse(s);const m=localStorage.getItem("gg_me");if(m)me=JSON.parse(m)}catch(e){}
+function commit(){try{localStorage.setItem("gg_state",JSON.stringify(S))}catch(e){}if(dbRef)dbRef.set(S).catch(()=>{})}
+const money=n=>n?"৳"+Number(n).toLocaleString("en-US"):"Free";
+const fmt=d=>new Date(d+"T12:00:00").toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric",year:"numeric"});
+const sold=id=>S.bookings.filter(b=>b.eid===id).reduce((a,b)=>a+b.qty,0);
+const left=e=>e.seats-sold(e.id);
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");setTimeout(()=>t.classList.remove("on"),2400)}
+function art(e){const h=HUE[e.c]??240;let n=0;for(const ch of e.id)n+=ch.charCodeAt(0);
+ return `<svg viewBox="0 0 400 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="g${E(e.id)}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="hsl(${h},70%,38%)"/><stop offset="1" stop-color="hsl(${h+45},75%,16%)"/></linearGradient></defs><rect width="400" height="150" fill="url(#g${E(e.id)})"/><circle cx="${60+n%240}" cy="-10" r="110" fill="#fff" opacity=".08"/><circle cx="${330-n%120}" cy="150" r="90" fill="#fff" opacity=".1"/><path d="M0 120 Q100 ${80+n%30} 200 115 T400 100 V150 H0Z" fill="#fff" opacity=".1"/><text x="200" y="92" font-size="52" text-anchor="middle">${ICON[e.c]||"🎟"}</text></svg>`}
+function card(e,foot){return `<article class="card">${art(e)}<div class="body"><div class="meta">${E(e.c)} · ${E(e.city)}</div><h3>${E(e.t)}</h3><div class="meta">${fmt(e.d)} · ${E(e.time)}</div><div class="meta">Hosted by ${E(e.co)}</div><div class="foot">${foot}</div></div></article>`}
+const cats=()=>[...new Set(S.events.filter(e=>e.status==="approved").map(e=>e.c))];
+
+/* ---------- login ---------- */
+function loginView(){
+ const list=ACCOUNTS.filter(a=>a.role===lrole);
+ return `<div class="split"><section class="hero"><svg class="bg" viewBox="0 0 600 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><circle cx="480" cy="120" r="200" fill="#E3B65A" opacity=".10"/><circle cx="90" cy="620" r="240" fill="#8E96FF" opacity=".14"/><path d="M0 430 Q150 360 300 430 T600 400 V700 H0Z" fill="#fff" opacity=".05"/><g fill="none" stroke="#E3B65A" opacity=".35"><circle cx="430" cy="470" r="60"/><circle cx="430" cy="470" r="95"/><circle cx="430" cy="470" r="130"/></g></svg>
+ <div class="brand">Gather<b>ly</b></div><div><h1>Every event, one ticket away.</h1><p>Companies host. Our team approves. You book. Concerts, study tours, book fairs and more across Bangladesh.</p></div><p>Demo platform · sample data only</p></section>
+ <section class="formside"><div class="box"><h2>Welcome back</h2><p class="muted">Choose how you’re signing in.</p>
+ <div class="seg" role="group" aria-label="Account type">${["customer","company","admin"].map(r=>`<button data-a="role" data-id="${r}" aria-pressed="${lrole===r}">${r[0].toUpperCase()+r.slice(1)}</button>`).join("")}</div>
+ <label for="u">Email</label><input id="u" type="email" autocomplete="username"><label for="p">Password</label><input id="p" type="password" autocomplete="current-password">
+ <p class="err" id="err" role="alert"></p><button class="btn" data-a="login" style="width:100%">Sign in as ${lrole}</button>
+ <div class="creds"><b>Demo ${lrole} logins</b>${list.map(a=>`<div><span>${E(a.name)}<br><code>${E(a.email)} / ${E(a.pass)}</code></span><button data-a="fill" data-id="${E(a.email)}">Use</button></div>`).join("")}</div></div></section></div>`}
+
+/* ---------- shells ---------- */
+const TABS={customer:[["browse","Events"],["tickets","My tickets"]],company:[["mine","My events"],["submit","Submit event"],["contact","Contact admin"]],admin:[["requests","Requests"],["events","All events"],["add","Add event"],["bookings","Bookings"],["inbox","Inbox"]]};
+function shell(body){
+ return `<header class="top"><div class="brand">Gather<b style="color:var(--accent)">ly</b></div><nav>${TABS[me.role].map(([k,l])=>`<button class="tab" data-a="tab" data-id="${k}" aria-current="${tab===k}">${l}${k==="requests"?(S.events.some(e=>e.status==="pending")?" ("+S.events.filter(e=>e.status==="pending").length+")":""):""}</button>`).join("")}</nav><div class="who"><span class="role">${me.role}</span>${E(me.name)} <button class="btn ghost sm" data-a="logout">Sign out</button></div></header><main>${body}</main>`}
+function banner(h,p){return `<div class="banner"><svg viewBox="0 0 800 120" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%" aria-hidden="true"><circle cx="720" cy="20" r="110" fill="#E3B65A" opacity=".13"/><circle cx="560" cy="130" r="80" fill="#8E96FF" opacity=".15"/></svg><div style="position:relative"><h2>${h}</h2><p>${p}</p></div></div>`}
+function bookBtn(e){const l=left(e);return `<div><div class="price">${money(e.p)}</div><div class="meta ${l<=10?"low":""}">${l>0?l+" seats left":"Sold out"}</div></div><button class="btn" data-a="book" data-id="${e.id}" ${l>0?"":"disabled"}>Book</button>`}
+function gridHtml(){const k=q.toLowerCase();const l=S.events.filter(e=>e.status==="approved"&&(!cat||e.c===cat)&&(e.t+e.city+e.co).toLowerCase().includes(k));
+ return l.length?l.map(e=>card(e,bookBtn(e))).join(""):`<div class="empty" style="grid-column:1/-1">No events match your search. Try another city or category.</div>`}
+function evForm(admin){return `<div class="panel"><label for="f_t">Event title</label><input id="f_t"><div class="two"><div><label for="f_c">Category</label><select id="f_c">${Object.keys(HUE).map(c=>`<option>${c}</option>`).join("")}</select></div><div><label for="f_city">City</label><input id="f_city"></div><div><label for="f_d">Date</label><input id="f_d" type="date"></div><div><label for="f_time">Time</label><input id="f_time" type="time" value="18:00"></div><div><label for="f_p">Ticket price (৳, 0 = free)</label><input id="f_p" type="number" min="0" value="0"></div><div><label for="f_s">Total seats</label><input id="f_s" type="number" min="1" value="100"></div></div>${admin?`<label for="f_co">Host company</label><input id="f_co" value="Gatherly">`:""}<label for="f_desc">Description</label><textarea id="f_desc" rows="3"></textarea><p class="err" id="ferr" role="alert"></p><button class="btn" data-a="${admin?"adminAdd":"submit"}">${admin?"Publish event":"Send for approval"}</button></div>`}
+function ticketRows(list){return list.length?list.map(b=>{const e=S.events.find(x=>x.id===b.eid);if(!e)return"";return `<div class="row ticket"><div><h3>${E(e.t)}</h3><div class="meta">${fmt(e.d)} · ${E(e.time)} · ${E(e.city)}</div><div class="meta">Ticket <code>${E(b.ref)}</code> · ${b.qty} × · ${money(b.total)}${me.role==="admin"?" · "+E(b.cust):""}</div></div><button class="btn bad sm" data-a="cancel" data-id="${E(b.ref)}">Cancel</button></div>`}).join(""):`<div class="empty">No bookings yet.</div>`}
+
+function view(){
+ const mine=S.events.filter(e=>e.co===me.name);
+ if(me.role==="customer"){
+  if(tab==="tickets")return shell(`<h2>My tickets</h2>${ticketRows(S.bookings.filter(b=>b.cust===me.email))}`);
+  return shell(`${banner("Find your next event","Browse events approved and hosted by trusted companies.")}<div class="bar"><input id="q" type="search" placeholder="Search events, cities or hosts" value="${E(q)}" aria-label="Search"><select id="cat" aria-label="Category"><option value="">All categories</option>${cats().map(c=>`<option ${c===cat?"selected":""}>${E(c)}</option>`).join("")}</select></div><div class="grid" id="grid">${gridHtml()}</div>`)}
+ if(me.role==="company"){
+  if(tab==="submit")return shell(`<h2>Submit a new event</h2><p class="muted">Admin reviews every event before it goes live to customers.</p>${evForm(false)}`);
+  if(tab==="contact")return shell(`<h2>Contact admin</h2><div class="panel"><label for="msg">Message</label><textarea id="msg" rows="4" placeholder="Ask about pricing, approval or listing changes"></textarea><p class="err" id="merr"></p><button class="btn" data-a="send">Send message</button></div><h3 style="margin:1.5rem 0 .7rem">Sent messages</h3>${S.messages.filter(m=>m.co===me.name).map(m=>`<div class="row"><span>${E(m.text)}</span><span class="meta">${E(m.at)}</span></div>`).join("")||`<div class="empty">No messages yet.</div>`}`);
+  return shell(`${banner("Hello, "+E(me.name),"Track approval and ticket sales for the events you host.")}<h2>My events</h2>${mine.map(e=>`<div class="row"><div><h3>${E(e.t)}</h3><div class="meta">${fmt(e.d)} · ${E(e.city)} · ${sold(e.id)}/${e.seats} sold</div></div><span class="badge ${e.status}">${e.status}</span></div>`).join("")||`<div class="empty">You haven’t submitted an event yet.</div>`}`)}
+ /* admin */
+ const pend=S.events.filter(e=>e.status==="pending"),rev=S.bookings.reduce((a,b)=>a+b.total,0);
+ if(tab==="events")return shell(`<h2>All events</h2>${S.events.map(e=>`<div class="row"><div><h3>${E(e.t)}</h3><div class="meta">${E(e.co)} · ${fmt(e.d)} · ${E(e.city)} · ${sold(e.id)}/${e.seats} sold</div></div><div class="acts"><span class="badge ${e.status}">${e.status}</span><button class="btn bad sm" data-a="del" data-id="${e.id}">Remove</button></div></div>`).join("")}`);
+ if(tab==="add")return shell(`<h2>Add an event</h2><p class="muted">Add events given to you by host companies. They go live immediately.</p>${evForm(true)}`);
+ if(tab==="bookings")return shell(`<h2>All bookings</h2>${ticketRows(S.bookings)}`);
+ if(tab==="inbox")return shell(`<h2>Inbox</h2>${S.messages.map(m=>`<div class="row"><div><h3>${E(m.co)}</h3><div>${E(m.text)}</div></div><span class="meta">${E(m.at)}</span></div>`).join("")||`<div class="empty">No messages from companies yet.</div>`}`);
+ return shell(`${banner("Admin console","Review company requests, publish events and monitor bookings.")}<div class="stats"><div class="stat"><b>${S.events.filter(e=>e.status==="approved").length}</b>Live events</div><div class="stat"><b>${pend.length}</b>Awaiting approval</div><div class="stat"><b>${S.bookings.reduce((a,b)=>a+b.qty,0)}</b>Tickets sold</div><div class="stat"><b>${rev?money(rev):"৳0"}</b>Revenue</div></div><h2>Requests</h2>${pend.map(e=>`<div class="row"><div><h3>${E(e.t)}</h3><div class="meta">${E(e.co)} · ${fmt(e.d)} · ${E(e.city)} · ${money(e.p)} · ${e.seats} seats</div><div class="meta">${E(e.desc)}</div></div><div class="acts"><button class="btn ok sm" data-a="approve" data-id="${e.id}">Approve</button><button class="btn bad sm" data-a="reject" data-id="${e.id}">Reject</button></div></div>`).join("")||`<div class="empty">No pending requests.</div>`}`)}
+
+function render(){$("#root").innerHTML=me?view():loginView()}
+function readForm(co,status){
+ const g=id=>$("#"+id).value.trim(),t=g("f_t"),city=g("f_city"),d=g("f_d");
+ if(!t||!city||!d){$("#ferr").textContent="Enter a title, city and date.";return null}
+ const tm=g("f_time")||"18:00",[H,M]=tm.split(":"),h=+H;
+ return {id:"e"+Date.now(),t,c:g("f_c"),city,d,time:`${h%12||12}:${M} ${h<12?"AM":"PM"}`,p:Math.max(0,+g("f_p")||0),seats:Math.max(1,+g("f_s")||1),co,status,desc:g("f_desc")||"Details coming soon."}}
+const A={
+ role(id){lrole=id;render()},
+ fill(id){const a=ACCOUNTS.find(x=>x.email===id);$("#u").value=a.email;$("#p").value=a.pass},
+ login(){const a=ACCOUNTS.find(x=>x.role===lrole&&x.email===$("#u").value.trim().toLowerCase()&&x.pass===$("#p").value);
+  if(!a){$("#err").textContent="Email or password is incorrect for a "+lrole+" account. Use one of the demo logins.";return}
+  me={role:a.role,email:a.email,name:a.name};tab=TABS[a.role][0][0];try{localStorage.setItem("gg_me",JSON.stringify(me))}catch(e){}render()},
+ logout(){me=null;try{localStorage.removeItem("gg_me")}catch(e){}render()},
+ tab(id){tab=id;render()},
+ book(id){cur=S.events.find(e=>e.id===id);qty=1;$("#dt").textContent=cur.t;$("#dm").textContent=fmt(cur.d)+" at "+cur.time+" · "+cur.city;upd();$("#dlg").showModal()},
+ cancel(ref){S.bookings=S.bookings.filter(b=>b.ref!==ref);commit();render();toast("Booking cancelled")},
+ submit(){const e=readForm(me.name,"pending");if(!e)return;S.events.push(e);commit();tab="mine";render();toast("Sent to admin for approval")},
+ adminAdd(){const e=readForm($("#f_co").value.trim()||"Gatherly","approved");if(!e)return;S.events.push(e);commit();tab="events";render();toast("Event published")},
+ approve(id){S.events.find(e=>e.id===id).status="approved";commit();render();toast("Event approved")},
+ reject(id){S.events.find(e=>e.id===id).status="rejected";commit();render();toast("Event rejected")},
+ del(id){S.events=S.events.filter(e=>e.id!==id);S.bookings=S.bookings.filter(b=>b.eid!==id);commit();render();toast("Event removed")},
+ send(){const t=$("#msg").value.trim();if(!t){$("#merr").textContent="Write a message first.";return}
+  S.messages.unshift({co:me.name,text:t,at:new Date().toLocaleString("en-US",{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"})});commit();render();toast("Message sent to admin")}
+};
+document.addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(b&&A[b.dataset.a])A[b.dataset.a](b.dataset.id)});
+document.addEventListener("input",e=>{if(e.target.id==="q"){q=e.target.value;$("#grid").innerHTML=gridHtml()}});
+document.addEventListener("change",e=>{if(e.target.id==="cat"){cat=e.target.value;$("#grid").innerHTML=gridHtml()}});
+document.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id==="p")A.login()});
+function upd(){$("#n").textContent=qty;$("#tot").textContent=money(cur.p*qty)}
+$("#minus").onclick=()=>{if(qty>1){qty--;upd()}};
+$("#plus").onclick=()=>{if(qty<Math.min(6,left(cur))){qty++;upd()}};
+$("#cancel").onclick=()=>$("#dlg").close();
+$("#confirm").onclick=()=>{S.bookings.push({ref:"GG-"+Math.random().toString(36).slice(2,7).toUpperCase(),eid:cur.id,cust:me.email,qty,total:cur.p*qty});commit();$("#dlg").close();render();toast("Booked "+qty+" ticket"+(qty>1?"s":""))};
+if(me&&!TABS[me.role])me=null;if(me)tab=TABS[me.role][0][0];
+render();
+if(window.claude&&claude.use)claude.use("db").then(db=>{if(!db)return;const r=db.doc("app/state");
+ r.onSnapshot(s=>{if(s.exists){S=s.data();try{localStorage.setItem("gg_state",JSON.stringify(S))}catch(e){}if(!/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName||"")&&!$("#dlg").open)render()}else r.set(S).catch(()=>{});dbRef=r},()=>{})}).catch(()=>{});
+</script>
+</body>
+</html>
